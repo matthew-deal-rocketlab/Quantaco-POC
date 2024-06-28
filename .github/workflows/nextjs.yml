@@ -36,28 +36,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
+          cache: "npm"
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Add pnpm to PATH
-        run: echo "::add-path::$(npm bin -g)"
-
-      - name: Restore pnpm cache
+      - name: Restore npm cache
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-npm-
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       - name: Build with Next.js
-        run: pnpm next build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
